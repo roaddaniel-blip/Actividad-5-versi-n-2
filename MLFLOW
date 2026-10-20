@@ -1,0 +1,32 @@
+# Resumen de la Evidencia de MLflow Obtenida
+
+## Información del Experimento
+* **Experimento Registrado:** `Clasificacion_Sentimiento_Actividad_5` (ID: `1`)
+* **Número Total de Ejecuciones (Runs):** **81 ejecuciones** en total, incluyendo corridas manuales de optimización y registros automáticos de hiperparámetros (`autolog`).
+
+## Últimas Pruebas de Modelos Optimizados
+
+### Random_Forest_Optimized
+* **ID de Ejecución (Run ID):** `bb5a6858...`
+* **Estado:** Finalizado con éxito.
+* **Parámetros Registrados:** 
+  * `max_depth: None`
+  * `n_estimators: 50`
+* **Métricas de Evaluación:**
+  * `accuracy: 1.0`
+  * `f1_macro: 1.0`
+
+### Logistic_Regression_Optimized
+* **ID de Ejecución (Run ID):** `cb0e1729...`
+* **Estado:** Finalizado con éxito.
+* **Parámetros Registrados:** 
+  * `C: 1.0`
+  * `penalty: l2`
+  * `solver: liblinear`
+* **Métricas de Prueba:**
+  * `accuracy: 1.0`
+  * `f1_macro: 1.0`
+
+
+
+
