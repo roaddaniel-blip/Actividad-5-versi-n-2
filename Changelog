@@ -1,1 +1,22 @@
+# Historial de Versiones (Changelog)
 
+## [v1.3.0] - Silenciado de Advertencias e Integración Autolog
+* **Añadido:** Configuración de filtros en el módulo `warnings` para ignorar mensajes repetitivos sobre el formato de serialización de modelos (`pickle` y `cloudpickle`) al registrar en MLflow.
+* **Añadido:** Configuración del nivel de registro del logger de MLflow a `logging.ERROR` para mantener la salida del notebook limpia de mensajes de depuración.
+* **Añadido:** Demostraciones de entrenamiento utilizando la característica `mlflow.sklearn.autolog()` para el registro automático de parámetros y métricas.
+
+## [v1.2.0] - Corrección de Persistencia y Estructura en MLflow
+* **Corregido:** Eliminación automática mediante script del directorio corrupto `./mlruns/1` que causaba excepciones de metadatos faltantes (`MissingConfigException`).
+* **Añadido:** Configuración de la variable de entorno `MLFLOW_ALLOW_FILE_STORE = "true"` para permitir sin restricciones el almacenamiento local de artefactos.
+* **Añadido:** Búsqueda dinámica y robusta en múltiples Backends de Tracking (directorio local `./mlruns` y base de datos relacional `sqlite:///mlflow.db`).
+* **Mejorado:** Control de excepciones durante la consulta de ejecuciones con `MlflowClient` para evitar bloqueos por ejecuciones fallidas o nulas.
+
+## [v1.1.0] - Recuperación por Archivo Faltante y Visualización
+* **Añadido:** Sistema de respaldo de datos sintéticos balanceados de opiniones (POS y NEG) para poder ejecutar el pipeline de procesamiento de texto y modelado en ausencia del archivo físico de Excel.
+* **Añadido:** Gráfico de barras interactivo con `matplotlib` y `seaborn` que consolida y compara el rendimiento (Exactitud, Precisión, Sensibilidad y F1-Score) de los modelos optimizados.
+* **Modificado:** Configuración del parámetro `skops_trusted_types` en la persistencia del modelo Random Forest de MLflow para evadir alertas de seguridad durante la carga de árboles.
+
+## [v1.0.0] - Línea Base (Base-line) del Proyecto
+* **Añadido:** Importación e implementación del preprocesamiento básico (Label Encoding y Vectorización TF-IDF).
+* **Añadido:** Entrenamiento de modelos base: Regresión Logística y Random Forest Classifier.
+* **Añadido:** Búsqueda de cuadrícula (`GridSearchCV`) con validación cruzada de 5 pliegues optimizando el *F1-Score macro*.
