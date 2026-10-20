@@ -1,0 +1,63 @@
+Reporte técnico: clasificación de sentimientos
+En este reporte explicó cómo se prepararon los datos, qué modelos se probaron y cuáles fueron los resultados. También incluyo algunas limitaciones que considero importantes si el proyecto se quisiera usar con opiniones reales.
+1. Origen y descripción de los datos
+El archivo principal para la actividad fue “Actividad 5 .xlsx”. Como el trabajo se ejecutó en Google Colab y los archivos pueden dejar de estar disponibles al reiniciar la sesión, se incluyó una alternativa que genera opiniones sintéticas balanceadas. Esto permite continuar con las pruebas, aunque los resultados de esos datos no deben confundirse con los de opiniones reales.
+Las variables utilizadas fueron las siguientes:
+Variable
+Tipo
+Descripción
+text
+Texto
+Opinión original del usuario.
+label
+Categoría
+Sentimiento POS o NEG.
+text_clean
+Texto
+Opinión en minúsculas y sin espacios sobrantes.
+label_encoded
+Número
+Etiqueta transformada: POS = 1, NEG = 0.
+
+2. Supuestos del análisis
+Para simplificar el problema, se tomó cada comentario como una opinión independiente. Además, solo se trabajó con dos categorías: positiva y negativa. Por eso, los comentarios neutrales o ambiguos no se analizan como una tercera clase.
+Se utilizó TF-IDF para representar las palabras con números. Se fijó un máximo de 5,000 términos, suponiendo que esa cantidad es suficiente para identificar las diferencias principales entre opiniones positivas y negativas.
+3. Limpieza y preparación
+Primero se revisaron los valores faltantes en las columnas text y label. Los registros incompletos se eliminaron con dropna() para evitar problemas en el entrenamiento. Después se pasaron los textos a minúsculas con str.lower() y se quitaron espacios al inicio y al final con str.strip().
+Las etiquetas se convirtieron a valores numéricos usando LabelEncoder: NEG se representó con 0 y POS con 1. Finalmente, se aplicó TF-IDF con max_features=5000 para convertir las opiniones en características que pudieran utilizar los algoritmos.
+También se agregó una opción de respaldo: cuando no está disponible el Excel, el programa genera datos sintéticos balanceados. Es útil para comprobar que el proceso funciona, pero limita lo que podemos concluir sobre el desempeño con datos reales.
+4. Control de versiones y documentación
+Para organizar los cambios del proyecto se planteó usar versionamiento semántico, con el formato MAJOR.MINOR.PATCH. MAJOR corresponde a cambios que rompen la compatibilidad, MINOR a funciones nuevas compatibles y PATCH a correcciones pequeñas.
+El README.md sirve para explicar el objetivo, los requisitos, la instalación, la ejecución y las variables del proyecto. En cambio, CHANGELOG.md se usa como historial de modificaciones. Ahí se pueden clasificar cambios como Added, Changed, Deprecated, Removed, Fixed y Security. La idea es actualizar el historial cada vez que haya una nueva versión.
+5. Modelos y ajuste de parámetros
+Se entrenaron dos modelos. El primero fue Regresión Logística, que estima la probabilidad de que una opinión pertenezca a una categoría. El segundo fue Random Forest, que combina varios árboles de decisión. Compararlos ayudó a revisar si ambos podían resolver el mismo problema de clasificación.
+Para elegir los parámetros se utilizó GridSearchCV con validación cruzada. En Regresión Logística se seleccionaron C = 10.0, penalización l2 y solver liblinear. Para Random Forest se eligieron 50 árboles, profundidad máxima sin límite (None) y min_samples_split = 2.
+6. Resultados y observaciones
+En el conjunto de prueba reportado, ambos modelos obtuvieron resultados de 1.0000 en exactitud, precisión macro, recall, F1 macro y ROC-AUC.
+Modelo
+Accuracy
+Precisión
+Recall
+F1
+ROC-AUC
+Regresión logística
+1.0000
+1.0000
+1.0000
+1.0000
+1.0000
+Random Forest
+1.0000
+1.0000
+1.0000
+1.0000
+1.0000
+
+Estos resultados son muy altos, pero hay que interpretarlos con cuidado. El reporte original indica que se usaron datos sintéticos balanceados de recuperación y que las clases eran fáciles de separar. Palabras como “excelente”, “encantó”, “pésimo” y “malo” ayudaron a distinguir las opiniones. En una situación real, con mensajes más variados o clases desbalanceadas, probablemente el rendimiento no sería igual. En ese caso sería importante revisar especialmente el F1-score, además de la exactitud.
+7. Registro de experimentos con MLflow
+Se registró un experimento llamado Clasificacion_Sentimiento_Actividad_5. Según el registro descrito, las ejecuciones guardaron los parámetros y las métricas de los modelos en la base local sqlite:///mlflow.db. Los modelos finales también se almacenaron mediante mlflow.sklearn.log_model. Esto ayuda a comparar pruebas y recuperar las configuraciones usadas.
+8. Limitaciones y posibles mejoras
+Una limitación es que el código dependía de una ruta local dentro de /content/. Para un proyecto más estable se podría guardar el archivo en un servicio como Google Cloud Storage o Amazon S3. Otra limitación es que el vocabulario de TF-IDF queda fijo después del entrenamiento; si aparecen nuevas expresiones o formas de escribir, sería necesario actualizar y volver a entrenar el modelo.
+Si se quisiera llevar el proyecto a producción, también convendría monitorear los cambios en los datos (data drift) y administrar las versiones con MLflow Model Registry. Más adelante se podría automatizar el despliegue mediante CI/CD y contenedores Docker.
+9. Conclusión
+Esta actividad me permitió entender mejor las etapas de un proyecto básico de clasificación de sentimientos: preparar los datos, convertir el texto a números, entrenar modelos, comparar métricas y guardar los experimentos. Lo más importante que me llevo es que obtener 100 % en las pruebas no significa necesariamente que el modelo funcionará igual con comentarios reales. Antes de usarlo fuera de la actividad, habría que probarlo con información más diversa y revisar cómo responde a opiniones difíciles de clasificar.
