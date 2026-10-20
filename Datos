@@ -1,1 +1,14 @@
+### Datos Originales (Teóricos)
+El flujo inicial está diseñado para leer el archivo de Excel **`Actividad 5 .xlsx`** (el cual contiene reseñas reales con las columnas `text` para el texto de la opinión y `label` con las clases `POS` para opiniones positivas y `NEG` para negativas).
 
+### Datos de Respaldo (Sintéticos)
+Dado que el archivo original no se encuentra cargado físicamente en este entorno de Google Colab, se generó un conjunto de datos sintético balanceado para asegurar que los modelos se entrenen, optimicen y registren correctamente en **MLflow** sin interrupciones. Este conjunto consta de opiniones patrón repetidas de forma balanceada:
+
+*   **Ejemplos Positivos (POS):** *"excelente servicio y producto muy bueno"*, *"me encanto todo perfecto"*, *"muy feliz con mi compra"*.
+*   **Ejemplos Negativos (NEG):** *"pésimo servicio no lo recomiendo"*, *"mal producto llego roto"*, *"estoy muy insatisfecho"*.
+
+### Procesamiento aplicado a los datos
+1.  **Limpieza:** Conversión de todo el texto a minúsculas y eliminación de espacios en blanco adicionales (`text_clean`).
+2.  **Codificación:** Las etiquetas de texto se transformaron a valores numéricos binarios (`0` para `NEG` y `1` para `POS`).
+3.  **Representación Vectorial:** El texto limpio se representó mediante características numéricas continuas utilizando la técnica **TF-IDF** (*Term Frequency - Inverse Document Frequency*).
+Usa el código con precaución.
